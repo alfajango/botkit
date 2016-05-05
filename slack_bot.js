@@ -78,7 +78,7 @@ var controller = Botkit.slackbot({
 });
 
 var expressions = [{
-  pattern: '#(\d+)',
+  pattern: /#(\d+)/,
   replacement: "https://pm.alfajango.com/issues/",
   integration: 'redmine'
 }];
@@ -235,10 +235,10 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 controller.on('direct_message,direct_mention,mention,ambient', function(bot, message) {
   if (message.text) {
     expressions.forEach(function(expression) {
-      var regex = new RegExp(expression.pattern, 'gm');
+      var regex = new RegExp(expression.pattern.source, 'gm');
       var matches = message.text.match(regex);
       if (matches) {
-        var captureRegex = new RegExp(expression.pattern);
+        var captureRegex = new RegExp(expression.pattern.source);
         matches.forEach(function(match) {
           var replacement = match.match(captureRegex);
           if (replacement) {
