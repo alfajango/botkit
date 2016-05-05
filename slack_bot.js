@@ -78,7 +78,7 @@ var controller = Botkit.slackbot({
 });
 
 var expressions = [{
-  pattern: /#(\d+)/,
+  pattern: '#(\d+)',
   replacement: "https://pm.alfajango.com/issues/",
   integration: 'redmine'
 }];
