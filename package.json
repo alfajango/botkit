@@ -22,8 +22,7 @@
   },
   "scripts": {
     "pretest": "jscs ./lib/",
-    "test": "mocha tests/*.js",
-    "start": "node slack_bot.js"
+    "test": "mocha tests/*.js"
   },
   "repository": {
     "type": "git",
