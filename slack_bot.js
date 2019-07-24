@@ -239,7 +239,7 @@ controller.on('direct_message,direct_mention,mention,ambient', function(bot, mes
       var matches = message.text.match(regex);
       if (matches) {
         var captureRegex = new RegExp(expression.pattern.source);
-        matches.forEach(function(match) {
+        var integrationResponses = matches.map(match => new Promise((resolve, reject) => {
           var replacement = match.match(captureRegex);
           if (replacement) {
             var capture = replacement[1];
@@ -247,15 +247,16 @@ controller.on('direct_message,direct_mention,mention,ambient', function(bot, mes
             if (expression.integration && integrations[expression.integration]) {
               integrations[expression.integration](capture, function(integrationResponse) {
                 integrationResponse.title_link = response;
-                message.unfurl_links = false;
-                bot.reply(message, {
-                  attachments: [integrationResponse]
-                });
+                resolve(integrationResponse);
               });
             } else {
-              bot.reply(message, response);
+              resolve(response);
             }
-          }
+        }}));
+        Promise.all(integrationResponses).then(attachments => {
+          // console.log(attachments);
+          message.unfurl_links = false;
+          bot.reply(message, {attachments})
         });
       }
     });
