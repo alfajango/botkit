@@ -246,8 +246,12 @@ controller.on('direct_message,direct_mention,mention,ambient', function(bot, mes
             var response = expression.replacement + capture;
             if (expression.integration && integrations[expression.integration]) {
               integrations[expression.integration](capture, function(integrationResponse) {
-                integrationResponse.title_link = response;
-                resolve(integrationResponse);
+                if (!integrationResponse) {
+                  resolve();
+                } else {
+                  integrationResponse.title_link = response;
+                  resolve(integrationResponse);
+                }
               });
             } else {
               resolve(response);
