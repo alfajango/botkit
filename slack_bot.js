@@ -68,10 +68,10 @@ if (!process.env.token) {
   process.exit(1);
 }
 
-var Botkit = require('./lib/Botkit.js');
+const Botkit = require('./lib/Botkit.js');
 
-var redmine = require ('./lib/integrations/redmine');
-var github = require('./lib/integrations/github')
+const redmine = require('./lib/integrations/redmine');
+const github = require('./lib/integrations/github')
 
 var controller = Botkit.slackbot({
   debug: false,
@@ -86,19 +86,19 @@ controller.spawn({
   token: process.env.token
 }).startRTM();
 
-controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function(bot, message) {
+controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function (bot, message) {
 
   bot.api.reactions.add({
     timestamp: message.ts,
     channel: message.channel,
     name: 'robot_face',
-  }, function(err) {
+  }, function (err) {
     if (err) {
       bot.botkit.log('Failed to add emoji reaction :(', err);
     }
   });
 
-  controller.storage.users.get(message.user, function(err, user) {
+  controller.storage.users.get(message.user, function (err, user) {
     if (user && user.name) {
       bot.reply(message, 'Hello ' + user.name + '!!');
     } else {
@@ -107,7 +107,7 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
   });
 });
 
-controller.on('direct_message,direct_mention,mention,ambient', function(bot, message) {
+controller.on('direct_message,direct_mention,mention,ambient', function (bot, message) {
   message.unfurl_links = false;
   if (message.text) {
     const queries = integrations.reduce((arr, integration) => {
