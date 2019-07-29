@@ -4,6 +4,8 @@
   "description": "Building blocks for Building Bots",
   "main": "lib/Botkit.js",
   "dependencies": {
+    "@octokit/rest": "^16.28.7",
+    "axios": "^0.19.0",
     "back": "^1.0.1",
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
