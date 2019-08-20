@@ -109,15 +109,20 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
 
 controller.on('direct_message,direct_mention,mention,ambient', function (bot, message) {
   message.unfurl_links = false;
-  if (message.text) {
-    const queries = integrations.reduce((arr, integration) => {
-      return integration ? arr.concat(integration(message.text)) : arr
-    }, [])
-    Promise.all(queries)
-      .then(values => {
-        const attachments = values.sort((a, b) => (a.index > b.index) ? 1 : -1)
-        bot.reply(message, {attachments})
-      })
-      .catch(e => console.error(e))
+  try {
+    if (message.text) {
+      const queries = integrations.reduce((arr, integration) => {
+        return integration ? arr.concat(integration(message.text)) : arr
+      }, [])
+      Promise.all(queries)
+        .then(values => {
+          const attachments = values.sort((a, b) => (a.index > b.index) ? 1 : -1)
+          bot.reply(message, {attachments})
+        })
+        .catch(e => console.error(e))
+    }
+  } catch (e) {
+    console.error(e)
+    console.error(message)
   }
 });
