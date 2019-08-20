@@ -118,5 +118,6 @@ controller.on('direct_message,direct_mention,mention,ambient', function (bot, me
         const attachments = values.sort((a, b) => (a.index > b.index) ? 1 : -1)
         bot.reply(message, {attachments})
       })
+      .catch(e => console.error(e))
   }
 });
