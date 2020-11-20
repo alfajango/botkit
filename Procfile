@@ -1,1 +1,1 @@
-worker: node slack_bot.js
+web: node slack_bot.js
